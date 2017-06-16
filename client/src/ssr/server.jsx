@@ -1,10 +1,10 @@
 import express                   from 'express';
 import React      from 'react';
 const DOM = React.DOM, body = DOM.body, div = DOM.div, script = DOM.script;
-import { renderToString, renderToStaticMarkup }        from 'react-dom/server'
-import { RouterContext, match } from 'react-router';
-import routes     from '../src/routes';
-import reducer from '../src/reducer';
+import { renderToString }        from 'react-dom/server'
+import { StaticRouter } from 'react-router';
+import App from '../app'
+import reducer from '../reducer';
 import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider }              from 'react-redux';
@@ -55,44 +55,17 @@ app.use((req, res) => {
 
     const store = createStoreWithMiddleware(reducer);
 
-    match({ routes, location }, (err, redirectLocation, renderProps) => {
-        if(err || (renderProps.location.pathname && renderProps.location.pathname.indexOf('null') >= 0)) {
-            logger.error(err);
-            return res.render('error', {message: 'Internal server error'});
-        }
-
-        if(!renderProps) {
-            logger.info(`match react route 404`);
-            return res.render("404");
-        }
-
-        logger.info(`match react route ${renderProps.location.pathname}`);
-
-        function renderView() {
-            logger.debug(`renderView start`);
-            try {
-                const InitialView = (
-                    <Provider store={store}>
-                        <RouterContext {...renderProps} />
-                    </Provider>
-                );
-                logger.debug(`renderToString start`);
-                const componentHTML =  renderToString(InitialView);
-                logger.debug(`renderToString end`);
-
-                const initialState = store.getState();
-
-                logger.debug(`renderView end`);
-                return {componentHTML, initialState};
-            } catch (e) {
-                logger.error(e);
-            }
-        }
-
-        let renderData = renderView();
-        logger.debug(`return response`);
-        res.render('index', renderData);
-    });
+    const context = {};
+    const componentHTML = renderToString(
+        <StaticRouter
+            location={req.url}
+            context={store}
+        >
+            <App/>
+        </StaticRouter>
+    );
+    const initialState = store.getState();
+    res.render('index', {componentHTML, initialState});
 });
 
 const PORT = process.env.PORT || 3000;

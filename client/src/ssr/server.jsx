@@ -8,34 +8,17 @@ import reducer from '../reducer';
 import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider }              from 'react-redux';
-import createLocation from 'history/lib/createLocation';
 import path                      from 'path';
 
-const log4js = require('log4js');
-log4js.configure({
-    appenders: [
-        { type: 'console' },
-        { type: 'file',
-            filename: 'logs/server.log',
-            category: 'server',
-            "pattern": "-MM-dd",
-            "alwaysIncludePattern": true,
-            "maxLogSize": 102400,
-        }
-    ]
-});
-
-const logger = log4js.getLogger('server');
-logger.setLevel(process.env.LOG_LEVEL || 'ERROR');
 
 
 const app = express();
 
 if (process.env.NODE_ENV !== 'production') {
-    logger.info(`NODE_ENV is develop`);
-    require('../webpack.config').default(app);
+    console.log(`NODE_ENV is develop`);
+    require('../../webpack.config').default(app);
 } else {
-    logger.info(`NODE_ENV is production`);
+    console.log(`NODE_ENV is production`);
     app.use('/', express.static('./dist'));
 }
 
@@ -43,12 +26,10 @@ app.use(express.static('./dist'));
 app.use('/static', express.static('./public'));
 
 
-app.set('views', './server');
+app.set('views', './src/ssr');
 app.set('view engine', 'pug');
 
 app.use((req, res) => {
-    const location = createLocation(req.url);
-    logger.debug(`match express route ${req.url}`);
     const createStoreWithMiddleware = applyMiddleware(
         thunkMiddleware
     )(createStore);
@@ -72,7 +53,7 @@ const PORT = process.env.PORT || 3000;
 
 
 app.listen(PORT, function () {
-    logger.info('Server listening on: ' + PORT);
+    console.log('Server listening on: ' + PORT);
 });
 
 export default app;

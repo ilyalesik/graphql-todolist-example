@@ -11,7 +11,7 @@ export default function(app) {
         entry:   [
             'babel-polyfill',
             'webpack-hot-middleware/client',
-            './src/index.jsx',
+            './src/index.js',
         ],
         module: {
             rules: [
@@ -62,22 +62,17 @@ export default function(app) {
         output: {
             path: path.join(__dirname, 'dist'),
             publicPath: '/',
-            filename: 'bundle.js',
-            proxy: {
-                cookieDomainRewrite: ''
-            }
+            filename: 'bundle.js'
         },
         resolve: {
-            extensions: ['', '.js', '.jsx']
+            extensions: ['.js', '.jsx']
         },
         devServer: {
             contentBase: './dist',
             hot: true
         },
         plugins: [
-            new webpack.optimize.OccurenceOrderPlugin(),
-            new webpack.HotModuleReplacementPlugin(),
-            new webpack.NoErrorsPlugin()
+            new webpack.HotModuleReplacementPlugin()
         ],
     };
 

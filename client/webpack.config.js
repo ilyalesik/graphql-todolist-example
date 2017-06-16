@@ -26,7 +26,7 @@ export default function(app) {
                     },
                 },
                 {
-                    test: /\.scss$/,
+                    test: /\.css$/,
                     exclude: /node_modules/,
                     use: [
                         {
@@ -58,9 +58,6 @@ export default function(app) {
                     use: ['babel-loader'],
                 },
             ],
-        },
-        postcss: function () {
-            return [autoprefixer];
         },
         output: {
             path: path.join(__dirname, 'dist'),

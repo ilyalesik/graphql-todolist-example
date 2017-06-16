@@ -1,0 +1,12 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(href='/bundle.css', media='all', rel='stylesheet')
+        title GraphQL TodoList Example
+        script(type='text/javascript').
+            window.__INITIAL_STATE__ = !{JSON.stringify(initialState)};
+    body
+        #app!= componentHTML
+        script(type='application/javascript', src='/bundle.js')

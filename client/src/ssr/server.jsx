@@ -36,17 +36,18 @@ app.use((req, res) => {
 
     const store = createStoreWithMiddleware(reducer);
 
-    const context = {};
+    const css = new Set(); // CSS for all rendered React components
+    const context = { insertCss: (...styles) => styles.forEach(style => css.add(style._getCss())) };
     const componentHTML = renderToString(
         <StaticRouter
             location={req.url}
-            context={store}
+            context={context}
         >
             <App/>
         </StaticRouter>
     );
     const initialState = store.getState();
-    res.render('index', {componentHTML, initialState});
+    res.render('index', {css: [...css].join(''), componentHTML, initialState});
 });
 
 const PORT = process.env.PORT || 3000;

@@ -30,6 +30,9 @@ export default function(app) {
                     exclude: /node_modules/,
                     use: [
                         {
+                            loader: 'isomorphic-style-loader'
+                        },
+                        {
                             loader: 'style-loader',
                         },
                         {
@@ -43,10 +46,7 @@ export default function(app) {
                             loader: 'postcss-loader',
                             options: {
                                 plugins: (loader) => [
-                                    require('postcss-import')({ root: loader.resourcePath }),
-                                    require('postcss-cssnext')(),
                                     require('autoprefixer')(),
-                                    require('cssnano')()
                                 ]
                             }
                         }

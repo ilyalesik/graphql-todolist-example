@@ -9,6 +9,7 @@ import {createStore, applyMiddleware} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { Provider }              from 'react-redux';
 import path                      from 'path';
+import { ServerStyleSheet } from 'styled-components'
 
 
 
@@ -36,18 +37,19 @@ app.use((req, res) => {
 
     const store = createStoreWithMiddleware(reducer);
 
-    const css = new Set(); // CSS for all rendered React components
-    const context = { insertCss: (...styles) => styles.forEach(style => css.add(style._getCss())) };
+    const sheet = new ServerStyleSheet();
     const componentHTML = renderToString(
+        sheet.collectStyles(
         <StaticRouter
             location={req.url}
-            context={context}
+            context={store}
         >
             <App/>
         </StaticRouter>
+        )
     );
     const initialState = store.getState();
-    res.render('index', {css: [...css].join(''), componentHTML, initialState});
+    res.render('index', {css: sheet.getStyleTags(), componentHTML, initialState});
 });
 
 const PORT = process.env.PORT || 3000;

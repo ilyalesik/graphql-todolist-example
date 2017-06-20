@@ -1,7 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import s from './mainPage.css'
-import withStyles from 'isomorphic-style-loader/lib/withStyles';
+import styled from 'styled-components'
+
+const Header = styled.h1`
+    color: red;
+`;
 
 export class MainPage extends React.PureComponent {
     constructor(props) {
@@ -10,9 +13,9 @@ export class MainPage extends React.PureComponent {
 
     render() {
         return <div className="">
-            <h1 className={s['main-page_header']}>ToDo</h1>
+            <Header>ToDo</Header>
         </div>
     }
 }
 
-export default withStyles(s)(MainPage);
+export default MainPage;

@@ -1,9 +1,20 @@
 import React from 'react'
 import styled from 'styled-components'
 
-const Title = styled.h1`
-  color: green;
-  font-size: 50px;
-`
+const Header = styled.h1`
+    color: red;
+`;
 
-export default () => <Title>My page</Title>
+export class MainPage extends React.PureComponent {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <div className="">
+            <Header>ToDo</Header>
+        </div>
+    }
+}
+
+export default MainPage;

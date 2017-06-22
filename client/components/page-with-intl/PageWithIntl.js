@@ -35,7 +35,7 @@ export default (Page) => {
     render () {
       const {locale, messages, now, ...props} = this.props
       return (
-        <IntlProvider locale={'ru'} messages={messages} initialNow={now}>
+        <IntlProvider locale={locale} messages={messages} initialNow={now}>
           <IntlPage {...props} />
         </IntlProvider>
       )

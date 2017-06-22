@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import ToDoList from '../components/todolist/ToDoList'
 import pageWithIntl from '../components/page-with-intl/PageWithIntl'
+import {FormattedMessage} from 'react-intl'
 
 const Header = styled.h1`
     font-weight: bold;
@@ -14,7 +15,7 @@ export class MainPage extends React.PureComponent {
 
     render() {
         return <div>
-            <Header>To Do list</Header>
+            <Header><FormattedMessage id='index.todo' defaultMessage='ToDo!' /></Header>
             <ToDoList />
         </div>
     }

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import ToDoList from '../components/todolist/ToDoList'
+import pageWithIntl from '../components/page-with-intl/PageWithIntl'
 
 const Header = styled.h1`
     font-weight: bold;
@@ -19,4 +20,4 @@ export class MainPage extends React.PureComponent {
     }
 }
 
-export default MainPage;
+export default pageWithIntl(MainPage);

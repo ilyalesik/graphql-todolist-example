@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-
+import {FormattedMessage} from 'react-intl'
 
 
 export class ToDoList extends React.PureComponent {
@@ -33,7 +33,9 @@ export class ToDoList extends React.PureComponent {
         return <div>
             <div>
                 <input type="text" value={this.state.inputValue} onChange={this.handleInputChange}/>
-                <button onClick={this.handleAddClick}>Добавить</button>
+                <button onClick={this.handleAddClick}>
+                    <FormattedMessage id='todolist.add' defaultMessage='Add' />
+                </button>
             </div>
             {this.state.items.map((item, key)=>{
                 return <div key={key}>{item.text}</div>

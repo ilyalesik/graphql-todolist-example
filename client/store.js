@@ -2,6 +2,11 @@ import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 import reducer from './reducer'
+import {updateIntl} from 'react-intl-redux'
+
+export const initIntl = ({locale, messages}) => dispatch => {
+    return dispatch(updateIntl({locale, messages}));
+}
 
 // ACTIONS
 export const serverRenderClock = (isServer) => dispatch => {

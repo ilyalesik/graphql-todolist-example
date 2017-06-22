@@ -4,7 +4,7 @@ import ToDoList from '../components/todolist/ToDoList'
 import pageWithIntl from '../components/page-with-intl/PageWithIntl'
 import {FormattedMessage} from 'react-intl'
 import { bindActionCreators } from 'redux'
-import { initStore, startClock, addCount, serverRenderClock } from '../store'
+import { initStore, startClock, addCount, serverRenderClock, initIntl } from '../store'
 import withRedux from 'next-redux-wrapper'
 
 const Header = styled.h1`
@@ -12,9 +12,11 @@ const Header = styled.h1`
 `;
 
 export class MainPage extends React.PureComponent {
-    static getInitialProps ({ store, isServer }) {
+    static getInitialProps (options) {
+        const { store, isServer, req: {locale, messages} } = options;
         store.dispatch(serverRenderClock(isServer))
-        store.dispatch(addCount())
+        store.dispatch(addCount());
+        store.dispatch(initIntl({locale, messages}));
 
         return { isServer }
     }
@@ -33,7 +35,8 @@ export class MainPage extends React.PureComponent {
 const mapDispatchToProps = (dispatch) => {
     return {
         addCount: bindActionCreators(addCount, dispatch),
-        startClock: bindActionCreators(startClock, dispatch)
+        startClock: bindActionCreators(startClock, dispatch),
+        initIntl: bindActionCreators(initIntl, dispatch)
     }
 };
 

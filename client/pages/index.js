@@ -3,12 +3,21 @@ import styled from 'styled-components'
 import ToDoList from '../components/todolist/ToDoList'
 import pageWithIntl from '../components/page-with-intl/PageWithIntl'
 import {FormattedMessage} from 'react-intl'
+import { bindActionCreators } from 'redux'
+import { initStore, startClock, addCount, serverRenderClock } from '../store'
+import withRedux from 'next-redux-wrapper'
 
 const Header = styled.h1`
     font-weight: bold;
 `;
 
 export class MainPage extends React.PureComponent {
+    static getInitialProps ({ store, isServer }) {
+        store.dispatch(serverRenderClock(isServer))
+        store.dispatch(addCount())
+
+        return { isServer }
+    }
     constructor(props) {
         super(props);
     }
@@ -17,8 +26,23 @@ export class MainPage extends React.PureComponent {
         return <div>
             <Header><FormattedMessage id='index.todo' defaultMessage='ToDo!' /></Header>
             <ToDoList />
+            <div>{this.props.count}</div>
         </div>
     }
 }
 
-export default pageWithIntl(MainPage);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addCount: bindActionCreators(addCount, dispatch),
+        startClock: bindActionCreators(startClock, dispatch)
+    }
+};
+
+const mapStateToProps = (state) => {
+    return {
+        count: state.count
+    }
+};
+
+
+export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(pageWithIntl(MainPage));

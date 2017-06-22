@@ -26,7 +26,6 @@ export class MainPage extends React.PureComponent {
         return <div>
             <Header><FormattedMessage id='index.todo' defaultMessage='ToDo!' /></Header>
             <ToDoList />
-            <div>{this.props.count}</div>
         </div>
     }
 }
@@ -40,7 +39,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
     return {
-        count: state.count
     }
 };
 

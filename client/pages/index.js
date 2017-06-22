@@ -6,9 +6,16 @@ import {FormattedMessage} from 'react-intl'
 import { bindActionCreators } from 'redux'
 import { initStore, startClock, addCount, serverRenderClock, initIntl } from '../store'
 import withRedux from 'next-redux-wrapper'
+import ChangeLanguage from '../components/language-changer/LaungageChanger'
 
 const Header = styled.h1`
     font-weight: bold;
+    flex: 1;
+`;
+
+const Nav = styled.div`
+    display: flex;
+    width: 500px;
 `;
 
 export class MainPage extends React.PureComponent {
@@ -26,7 +33,13 @@ export class MainPage extends React.PureComponent {
 
     render() {
         return <div>
-            <Header><FormattedMessage id='index.todo' defaultMessage='ToDo!' /></Header>
+            <Nav>
+                <Header>
+                    <FormattedMessage id='index.todo' defaultMessage='ToDo!' />
+                </Header>
+                <ChangeLanguage />
+            </Nav>
+
             <ToDoList />
         </div>
     }

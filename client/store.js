@@ -3,10 +3,17 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
 import reducer from './reducer'
 import {updateIntl} from 'react-intl-redux'
+import en from './lang/en'
+import ru from './lang/ru'
 
 export const initIntl = ({locale, messages}) => dispatch => {
     return dispatch(updateIntl({locale, messages}));
 }
+
+export const changeLanguage = () => (dispatch, getState) => {
+    const lang = getState().intl.locale;
+    return dispatch(updateIntl({locale: lang === 'en' ? 'ru' : 'en', messages: lang === 'en' ? ru : en}));
+};
 
 // ACTIONS
 export const serverRenderClock = (isServer) => dispatch => {

@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
+import ToDoList from '../components/todolist/ToDoList'
 
 const Header = styled.h1`
-    color: red;
+    font-weight: bold;
 `;
 
 export class MainPage extends React.PureComponent {
@@ -11,8 +12,9 @@ export class MainPage extends React.PureComponent {
     }
 
     render() {
-        return <div className="">
-            <Header>ToDo</Header>
+        return <div>
+            <Header>To Do list</Header>
+            <ToDoList />
         </div>
     }
 }

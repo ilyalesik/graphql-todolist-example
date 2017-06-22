@@ -41,10 +41,10 @@ const getMessages = (locale) => {
 app.prepare().then(() => {
   createServer((req, res) => {
     const accept = accepts(req)
-    const locale = accept.language(dev ? ['en'] : languages)
+    const locale = accept.language(languages)
     req.locale = locale
     req.localeDataScript = getLocaleDataScript(locale)
-    req.messages = dev ? {} : getMessages(locale)
+    req.messages = getMessages(locale)
     handle(req, res)
   }).listen(3000, (err) => {
     if (err) throw err

@@ -1,3 +1,4 @@
+import regeneratorRuntime from "regenerator-runtime"
 import {MongoClient, ObjectId} from 'mongodb'
 import express from 'express'
 import bodyParser from 'body-parser'

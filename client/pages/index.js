@@ -4,7 +4,8 @@ import ToDoList from '../components/todolist/ToDoList'
 import pageWithIntl from '../components/page-with-intl/PageWithIntl'
 import {FormattedMessage} from 'react-intl'
 import { bindActionCreators } from 'redux'
-import { initStore, startClock, addCount, serverRenderClock, initIntl } from '../store'
+import {  startClock, addCount, serverRenderClock, initIntl } from '../store'
+import initRedux from '../initRedux'
 import withRedux from 'next-redux-wrapper'
 import ChangeLanguage from '../components/language-changer/LaungageChanger'
 import withData from '../withData'
@@ -22,12 +23,6 @@ const Nav = styled.div`
 
 export class MainPage extends React.PureComponent {
     static getInitialProps (options) {
-        //const { store, isServer, req: {locale, messages} } = options;
-        //store.dispatch(serverRenderClock(isServer))
-        //store.dispatch(addCount());
-        //store.dispatch(initIntl({locale, messages}));
-//
-        //return { isServer }
     }
     constructor(props) {
         super(props);
@@ -47,18 +42,5 @@ export class MainPage extends React.PureComponent {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        addCount: bindActionCreators(addCount, dispatch),
-        startClock: bindActionCreators(startClock, dispatch),
-        initIntl: bindActionCreators(initIntl, dispatch)
-    }
-};
 
-const mapStateToProps = (state) => {
-    return {
-    }
-};
-
-
-export default withData(connect(mapStateToProps, mapDispatchToProps)(pageWithIntl(MainPage)));
+export default withData(pageWithIntl(MainPage));

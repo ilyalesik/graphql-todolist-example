@@ -1,5 +1,19 @@
-import 'babel-core/register'
-import 'babel-polyfill'
-import {start} from './start'
+'use strict';
 
-start()
+var fs = require('fs');
+
+var babelrc = fs.readFileSync('../.babelrc');
+var config;
+
+try {
+    config = JSON.parse(babelrc);
+} catch (err) {
+    console.error('==>     ERROR: Error parsing your .babelrc.');
+    console.error(err);
+}
+
+require('babel-core/register')(config);
+require('babel-polyfill');
+const start = require('./start').start;
+
+start();

@@ -51,8 +51,8 @@ export const start = async () => {
       },
       Mutation: {
           createTodoItem: async (root, args, context, info) => {
-          const res = await TodoItems.insert(args)
-          return prepare(await TodoItems.findOne({_id: res.insertedIds[1]}))
+            const res = await TodoItems.insert(args);
+            return prepare(await TodoItems.findOne({_id: res.insertedIds[0]}))
         }
       },
     }

@@ -7,6 +7,8 @@ import { bindActionCreators } from 'redux'
 import { initStore, startClock, addCount, serverRenderClock, initIntl } from '../store'
 import withRedux from 'next-redux-wrapper'
 import ChangeLanguage from '../components/language-changer/LaungageChanger'
+import withData from '../withData'
+import { connect } from 'react-redux'
 
 const Header = styled.h1`
     font-weight: bold;
@@ -20,12 +22,12 @@ const Nav = styled.div`
 
 export class MainPage extends React.PureComponent {
     static getInitialProps (options) {
-        const { store, isServer, req: {locale, messages} } = options;
-        store.dispatch(serverRenderClock(isServer))
-        store.dispatch(addCount());
-        store.dispatch(initIntl({locale, messages}));
-
-        return { isServer }
+        //const { store, isServer, req: {locale, messages} } = options;
+        //store.dispatch(serverRenderClock(isServer))
+        //store.dispatch(addCount());
+        //store.dispatch(initIntl({locale, messages}));
+//
+        //return { isServer }
     }
     constructor(props) {
         super(props);
@@ -59,4 +61,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default withRedux(initStore, mapStateToProps, mapDispatchToProps)(pageWithIntl(MainPage));
+export default withData(connect(mapStateToProps, mapDispatchToProps)(pageWithIntl(MainPage)));

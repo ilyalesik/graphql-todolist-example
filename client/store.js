@@ -1,7 +1,6 @@
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
-import reducer from './reducer'
 import {updateIntl} from 'react-intl-redux'
 import en from './lang/en'
 import ru from './lang/ru'
@@ -26,8 +25,4 @@ export const startClock = () => dispatch => {
 
 export const addCount = () => dispatch => {
   return dispatch({ type: 'ADD' })
-}
-
-export const initStore = (initialState ) => {
-  return createStore(reducer, initialState, composeWithDevTools(applyMiddleware(thunkMiddleware)))
 }

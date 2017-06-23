@@ -11,17 +11,17 @@ const PORT = 3001;
 const MONGO_URL = 'mongodb://localhost:27017/todolist';
 
 const prepare = (o) => {
-  o._id = o._id.toString()
-  return o
+    o._id = o._id.toString()
+    return o
 }
 
 export const start = async () => {
-  try {
-    const db = await MongoClient.connect(MONGO_URL)
+    try {
+        const db = await MongoClient.connect(MONGO_URL)
 
-    const TodoItems = db.collection('todoitems')
+        const TodoItems = db.collection('todoitems')
 
-    const typeDefs = [`
+        const typeDefs = [`
       type Query {
         todoitems: [TodoItem]
       }
@@ -41,44 +41,43 @@ export const start = async () => {
       }
     `];
 
-    const resolvers = {
-      Query: {
-        todoitems: async () => {
-          return (await TodoItems.find({}).toArray()).map(prepare)
-        },
-      },
-      TodoItem: {
+        const resolvers = {
+            Query: {
+                todoitems: async () => {
+                    return (await TodoItems.find({}).toArray()).map(prepare)
+                },
+            },
+            TodoItem: {},
+            Mutation: {
+                createTodoItem: async (root, args, context, info) => {
+                    const res = await TodoItems.insert(args);
+                    return prepare(await TodoItems.findOne({_id: res.insertedIds[0]}))
+                }
 
-      },
-      Mutation: {
-          createTodoItem: async (root, args, context, info) => {
-            const res = await TodoItems.insert(args);
-            return prepare(await TodoItems.findOne({_id: res.insertedIds[0]}))
+            },
         }
-      },
+
+        const schema = makeExecutableSchema({
+            typeDefs,
+            resolvers
+        })
+
+        const app = express()
+
+        app.use(cors())
+
+        app.use('/graphql', bodyParser.json(), graphqlExpress({schema}))
+
+        app.use('/graphiql', graphiqlExpress({
+            endpointURL: '/graphql'
+        }))
+
+        app.listen(PORT, () => {
+            console.log(`Visit ${URL}:${PORT}`)
+        })
+
+    } catch (e) {
+        console.log(e)
     }
-
-    const schema = makeExecutableSchema({
-      typeDefs,
-      resolvers
-    })
-
-    const app = express()
-
-    app.use(cors())
-
-    app.use('/graphql', bodyParser.json(), graphqlExpress({schema}))
-
-    app.use('/graphiql', graphiqlExpress({
-      endpointURL: '/graphql'
-    }))
-
-    app.listen(PORT, () => {
-      console.log(`Visit ${URL}:${PORT}`)
-    })
-
-  } catch (e) {
-    console.log(e)
-  }
 
 }

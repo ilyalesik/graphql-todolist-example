@@ -49,7 +49,7 @@ export const start = async () => {
         const resolvers = {
             Query: {
                 todoitems: async () => {
-                    return (await TodoItems.find({}).toArray()).map(prepare)
+                    return (await TodoItems.find({ deleted: null }).toArray()).map(prepare)
                 },
             },
             TodoItem: {},

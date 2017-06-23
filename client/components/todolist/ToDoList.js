@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {FormattedMessage} from 'react-intl'
+import { gql, graphql } from 'react-apollo'
 
 
 export class ToDoList extends React.PureComponent {
@@ -37,11 +38,24 @@ export class ToDoList extends React.PureComponent {
                     <FormattedMessage id='todolist.add' defaultMessage='Add' />
                 </button>
             </div>
-            {this.state.items.map((item, key)=>{
-                return <div key={key}>{item.text}</div>
+            {this.props.todoitems.map((item, key)=>{
+                return <div key={item._id}>{item.text}</div>
             })}
         </div>
     }
 }
 
-export default ToDoList;
+const allPosts = gql`
+  query {
+      todoitems {
+        _id
+        text
+      }
+    }
+`
+
+export default graphql(allPosts, {
+    props: ({ data }) => ({
+        todoitems: data.todoitems
+    })
+})(ToDoList);

@@ -12,7 +12,7 @@ function create () {
   return new ApolloClient({
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     networkInterface: createNetworkInterface({
-      uri: 'http://localhost:3001', // Server URL (must be absolute)
+      uri: 'http://localhost:3001/graphql', // Server URL (must be absolute)
     })
   })
 }

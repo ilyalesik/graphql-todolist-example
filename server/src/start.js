@@ -11,7 +11,10 @@ const PORT = 3001;
 const MONGO_URL = 'mongodb://localhost:27017/todolist';
 
 const prepare = (o) => {
-    o._id = o._id.toString()
+    if (o && o._id) {
+        o._id = o._id.toString();
+    }
+
     return o
 }
 
@@ -29,10 +32,12 @@ export const start = async () => {
       type TodoItem {
         _id: String
         text: String
+        deleted: Boolean
       }
 
       type Mutation {
-        createTodoItem(text: String): TodoItem
+        createTodoItem(text: String): TodoItem,
+        markDeleted(_id: String): TodoItem
       }
 
       schema {
@@ -52,10 +57,13 @@ export const start = async () => {
                 createTodoItem: async (root, args, context, info) => {
                     const res = await TodoItems.insert(args);
                     return prepare(await TodoItems.findOne({_id: res.insertedIds[0]}))
+                },
+                markDeleted: async (root, {_id}) => {
+                    await TodoItems.findOneAndUpdate({_id: ObjectId(_id)}, {$set: {deleted: true}});
+                    return prepare(await TodoItems.findOne({_id: ObjectId(_id)}));
                 }
-
             },
-        }
+        };
 
         const schema = makeExecutableSchema({
             typeDefs,

@@ -1,6 +1,8 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import reducer1 from './reducers/reducer1'
 import {intlReducer} from 'react-intl-redux'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunkMiddleware from 'redux-thunk'
 
 let reduxStore = null
 
@@ -18,9 +20,8 @@ function create (apollo, initialState = {}) {
       apollo: apollo.reducer()
     }),
     initialState, // Hydrate the store with server-side data
-    compose(
-      applyMiddleware(apollo.middleware()), // Add additional middleware here
-      devtools
+     composeWithDevTools(
+      applyMiddleware(apollo.middleware(), thunkMiddleware)
     )
   )
 }

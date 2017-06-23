@@ -51,8 +51,8 @@ const allPosts = gql`
         _id
         text
       }
-    }
-`
+  }
+`;
 
 export default graphql(allPosts, {
     props: ({ data }) => ({

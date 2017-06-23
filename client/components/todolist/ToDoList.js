@@ -1,15 +1,14 @@
 import React from 'react'
 import styled from 'styled-components'
 import {FormattedMessage} from 'react-intl'
-import { gql, graphql } from 'react-apollo'
+import { gql, graphql, compose } from 'react-apollo'
 
 
 export class ToDoList extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            inputValue: '',
-            items: []
+            inputValue: ''
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleAddClick = this.handleAddClick.bind(this);
@@ -22,10 +21,10 @@ export class ToDoList extends React.PureComponent {
     }
 
     handleAddClick() {
+        this.props.createTodoItem(this.state.inputValue);
         this.setState((prevState) => {
             return {
                 inputValue: '',
-                items: [...prevState.items, {text: prevState.inputValue}]
             };
         })
     }
@@ -45,7 +44,7 @@ export class ToDoList extends React.PureComponent {
     }
 }
 
-const allPosts = gql`
+const todoItems = gql`
   query {
       todoitems {
         _id
@@ -54,8 +53,34 @@ const allPosts = gql`
   }
 `;
 
-export default graphql(allPosts, {
-    props: ({ data }) => ({
-        todoitems: data.todoitems
+const createTodoItem = gql`
+    mutation createTodoItem($text: String!) {
+      createTodoItem(text: $text) {
+        _id
+        text
+      }
+    }
+`;
+
+export default compose(
+    graphql(todoItems, {
+        props: ({ data }) => ({
+            todoitems: data.todoitems
+        })}),
+    graphql(createTodoItem, {
+        props: ({ mutate }) => ({
+            createTodoItem: (text) => mutate({
+                variables: { text },
+                updateQueries: {
+                    todoitems: (previousResult, { mutationResult }) => {
+                        const newItem = mutationResult.data.createTodoItem
+                        return Object.assign({}, previousResult, {
+                            // Append the new post
+                            todoitems: [newItem, ...previousResult.todoitems]
+                        })
+                    }
+                }
+            })
+        })
     })
-})(ToDoList);
+)(ToDoList);

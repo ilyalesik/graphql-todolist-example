@@ -71,14 +71,12 @@ export default compose(
         props: ({ mutate }) => ({
             createTodoItem: (text) => mutate({
                 variables: { text },
-                updateQueries: {
-                    todoitems: (previousResult, { mutationResult }) => {
-                        const newItem = mutationResult.data.createTodoItem
-                        return Object.assign({}, previousResult, {
-                            // Append the new post
-                            todoitems: [newItem, ...previousResult.todoitems]
-                        })
-                    }
+                update: (store, { data: { createTodoItem } }) => {
+                    const data = store.readQuery({ query: todoItems });
+                    // Add our comment from the mutation to the end.
+                    data.todoitems.push(createTodoItem);
+                    // Write our data back to the cache.
+                    store.writeQuery({ query: todoItems, data });
                 }
             })
         })

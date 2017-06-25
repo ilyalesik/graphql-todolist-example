@@ -6,6 +6,8 @@ import {graphqlExpress, graphiqlExpress} from 'graphql-server-express'
 import {makeExecutableSchema} from 'graphql-tools'
 import cors from 'cors'
 
+import typeDefs from './schema'
+
 const URL = 'http://localhost';
 const PORT = 3001;
 const MONGO_URL = 'mongodb://localhost:27017/todolist';
@@ -23,28 +25,7 @@ export const start = async () => {
         const db = await MongoClient.connect(MONGO_URL)
 
         const TodoItems = db.collection('todoitems')
-
-        const typeDefs = [`
-      type Query {
-        todoitems: [TodoItem]
-      }
-
-      type TodoItem {
-        _id: String
-        text: String
-        deleted: Boolean
-      }
-
-      type Mutation {
-        createTodoItem(text: String): TodoItem,
-        markDeleted(_id: String): TodoItem
-      }
-
-      schema {
-        query: Query
-        mutation: Mutation
-      }
-    `];
+        const Viewers = db.collection('viewers')
 
         const resolvers = {
             Query: {

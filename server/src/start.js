@@ -52,6 +52,7 @@ export const start = async () => {
                         }
                     }
                     password = md5(password);
+                    //todo check already registed
                     const res = await Viewers.insert({firstName, lastName, login, password});
                     const token = jwt.sign({ userId: res.insertedIds[0], timestamp: Date.now() }, 'shhhhh');
                     return {token};

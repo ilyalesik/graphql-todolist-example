@@ -5,6 +5,8 @@ import bodyParser from 'body-parser'
 import {graphqlExpress, graphiqlExpress} from 'graphql-server-express'
 import {makeExecutableSchema} from 'graphql-tools'
 import cors from 'cors'
+import md5 from 'md5'
+import jwt from 'jsonwebtoken'
 
 import typeDefs from './schema'
 
@@ -42,6 +44,17 @@ export const start = async () => {
                 markDeleted: async (root, {_id}) => {
                     await TodoItems.findOneAndUpdate({_id: ObjectId(_id)}, {$set: {deleted: true}});
                     return prepare(await TodoItems.findOne({_id: ObjectId(_id)}));
+                },
+                register: async(root, {firstName, lastName, login, password}) => {
+                    if (!firstName || !lastName || !login || !password) {
+                        return {
+                            err: 'Null field'
+                        }
+                    }
+                    password = md5(password);
+                    const res = await Viewers.insert({firstName, lastName, login, password});
+                    const token = jwt.sign({ userId: res.insertedIds[0], timestamp: Date.now() }, 'shhhhh');
+                    return {token};
                 }
             },
         };

@@ -1,5 +1,6 @@
 import {TodoItem} from './TodoItem'
 import {Viewer} from './Viewer'
+import {Token} from './Token'
 
 const Query = `
   type Query {
@@ -12,10 +13,7 @@ const Mutation = `
   type Mutation {
      createTodoItem(text: String): TodoItem
      markDeleted(_id: String): TodoItem
-     register(firstName: String, lastName: String, login: String, password: String): {
-        token: String
-        error: String
-     }
+     register(firstName: String!, lastName: String!, login: String!, password: String!): Token
 }`;
 
 const SchemaDefinition = `
@@ -27,7 +25,7 @@ const SchemaDefinition = `
 
 const typeDefs = [
     SchemaDefinition, Query, Mutation,
-    TodoItem
+    TodoItem, Viewer, Token
 ];
 
 export default typeDefs;

@@ -14,6 +14,7 @@ const Mutation = `
      createTodoItem(text: String): TodoItem
      markDeleted(_id: String): TodoItem
      register(firstName: String!, lastName: String!, login: String!, password: String!): Token
+     createToken(login: String!, password: String!): Token
 }`;
 
 const SchemaDefinition = `

@@ -65,6 +65,17 @@ export const start = async () => {
                     const res = await Viewers.insert({firstName, lastName, login, password});
                     const token = jwt.sign({ userId: res.insertedIds[0], timestamp: Date.now() }, 'shhhhh');
                     return {token};
+                },
+                createToken: async (root, {login, password}) => {
+                    const viewer = await Viewers.findOne({login});
+                    if (!viewer) {
+                        return {err: 'User is not exist'}
+                    }
+                    if (md5(password) !== viewer.password) {
+                        return {err: 'Wrong password'}
+                    }
+                    const token = jwt.sign({ userId: viewer._id, timestamp: Date.now() }, 'shhhhh');
+                    return {token};
                 }
             },
         };

@@ -1,5 +1,8 @@
 {
   "todolist.add": "Добавить",
   "todolist.delete": "Удалить",
-  "index.todo": "Список дел"
+  "index.todo": "Список дел",
+  "login.button": "Войти",
+  "login.login": "Логин",
+  "login.password": "Пароль"
 }

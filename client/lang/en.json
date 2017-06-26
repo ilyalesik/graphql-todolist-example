@@ -1,5 +1,8 @@
 {
   "todolist.add": "Add",
   "todolist.delete": "Delete",
-  "index.todo": "ToDo list"
+  "index.todo": "ToDo list",
+  "login.button": "Login",
+  "login.login": "login",
+  "login.password": "Password"
 }

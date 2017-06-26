@@ -10,6 +10,7 @@ import withRedux from 'next-redux-wrapper'
 import ChangeLanguage from '../components/language-changer/LaungageChanger'
 import withData from '../withData'
 import { connect } from 'react-redux'
+import Login from '../components/login/Login'
 
 const Header = styled.h1`
     font-weight: bold;
@@ -38,6 +39,7 @@ export class MainPage extends React.PureComponent {
             </Nav>
 
             <ToDoList />
+            <Login />
         </div>
     }
 }

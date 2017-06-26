@@ -3,8 +3,12 @@ import styled from 'styled-components'
 import {FormattedMessage} from 'react-intl'
 import { gql, graphql, compose } from 'react-apollo'
 
+const Login = styled.div`
+    margin-top: 50px;
+`;
 
-export class Login extends React.PureComponent {
+
+export class LoginComponent extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,20 +28,27 @@ export class Login extends React.PureComponent {
     }
 
     render() {
-        return <div>
-            <label>
-                <FormattedMessage id='login.login' defaultMessage='Login' />
-            </label>
-            <input type="text" value={this.state.login} onChange={this.changeLogin} />
-            <label>
-                <FormattedMessage id='login.password' defaultMessage='Password' />
-            </label>
-            <input type="password" value={this.state.password} onChange={this.changePassword} />
-            <button>
-                <FormattedMessage id='login.button' defaultMessage='Login' />
-            </button>
-        </div>
+        return <Login>
+            <div>
+                <label>
+                    <FormattedMessage id='login.login' defaultMessage='Login' />
+                </label>
+                <input type="text" value={this.state.login} onChange={this.changeLogin} />
+            </div>
+            <div>
+                <label>
+                    <FormattedMessage id='login.password' defaultMessage='Password' />
+                </label>
+                <input type="password" value={this.state.password} onChange={this.changePassword} />
+            </div>
+            <div>
+                <button>
+                    <FormattedMessage id='login.button' defaultMessage='Login' />
+                </button>
+            </div>
+
+        </Login>
     }
 }
 
-export default Login;
+export default LoginComponent;

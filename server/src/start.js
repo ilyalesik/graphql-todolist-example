@@ -60,7 +60,10 @@ export const start = async () => {
                         }
                     }
                     password = md5(password);
-                    //todo check already registed
+                    const viewer = await Viewers.findOne({login});
+                    if (viewer) {
+                        return {err: 'User already exist'}
+                    }
                     //todo private key
                     const res = await Viewers.insert({firstName, lastName, login, password});
                     const token = jwt.sign({ userId: res.insertedIds[0], timestamp: Date.now() }, 'shhhhh');

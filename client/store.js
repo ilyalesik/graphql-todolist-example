@@ -1,6 +1,3 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import thunkMiddleware from 'redux-thunk'
 import {updateIntl} from 'react-intl-redux'
 import en from './lang/en'
 import ru from './lang/ru'
@@ -16,21 +13,10 @@ export const changeLanguage = () => (dispatch, getState) => {
     return dispatch(updateIntl({locale: lang === 'en' ? 'ru' : 'en', messages: lang === 'en' ? ru : en}));
 };
 
-// ACTIONS
-export const serverRenderClock = (isServer) => dispatch => {
-  return dispatch({ type: 'TICK', light: !isServer, ts: Date.now() })
-}
-
-export const startClock = () => dispatch => {
-  return setInterval(() => dispatch({ type: 'TICK', light: true, ts: Date.now() }), 800)
-}
-
-export const addCount = () => dispatch => {
-  return dispatch({ type: 'ADD' })
-}
-
 export const login = (login, password) => dispatch => {
-    initApollo().mutate({
+    const apollo = initApollo();
+    let token;
+    apollo.mutate({
         mutation: gql`
           mutation login($login: String!, $password: String!) {
               createToken(login: $login, password: $password) {
@@ -41,7 +27,20 @@ export const login = (login, password) => dispatch => {
         `,
         variables: {login: login, password: password}
     }).then(data => {
-        dispatch({type: 'LOGIN_SUCCESS', token: data.data.createToken.token});
+        token = data.data.createToken.token;
+        return apollo.query({
+            query: gql`
+                query viewer($token: String!) {
+                    viewer(token: $token) {
+                      firstName
+                      lastName
+                      login
+                    }
+                }`,
+            variables: {token}
+        })
+    }).then(data => {
+        dispatch({type: 'LOGIN_SUCCESS',  ...data.data.viewer, token});
     }).catch(error => {
         console.log(error);
         dispatch({type: 'LOGIN_ERROR'});

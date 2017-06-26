@@ -1,5 +1,4 @@
 import {createStore, combineReducers, applyMiddleware, compose} from 'redux'
-import reducer1 from './reducers/reducer1'
 import {intlReducer} from 'react-intl-redux'
 import {composeWithDevTools} from 'redux-devtools-extension'
 import thunkMiddleware from 'redux-thunk'
@@ -11,7 +10,6 @@ function create(apollo, initialState = {}) {
     return createStore(
         combineReducers({ // Setup reducers
             auth,
-            reducer1,
             intl: intlReducer,
             apollo: apollo.reducer()
         }),

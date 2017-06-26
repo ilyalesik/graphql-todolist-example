@@ -4,6 +4,8 @@ import thunkMiddleware from 'redux-thunk'
 import {updateIntl} from 'react-intl-redux'
 import en from './lang/en'
 import ru from './lang/ru'
+import initApollo from './initApollo'
+import { gql } from 'react-apollo'
 
 export const initIntl = ({locale, messages}) => dispatch => {
     return dispatch(updateIntl({locale, messages}));
@@ -26,3 +28,22 @@ export const startClock = () => dispatch => {
 export const addCount = () => dispatch => {
   return dispatch({ type: 'ADD' })
 }
+
+export const login = (login, password) => dispatch => {
+    initApollo().mutate({
+        mutation: gql`
+          mutation login($login: String!, $password: String!) {
+              createToken(login: $login, password: $password) {
+                token
+                err
+              }
+            }
+        `,
+        variables: {login: login, password: password}
+    }).then(data => {
+        dispatch({type: 'LOGIN_SUCCESS', token: data.data.createToken.token});
+    }).catch(error => {
+        console.log(error);
+        dispatch({type: 'LOGIN_ERROR'});
+    });
+};

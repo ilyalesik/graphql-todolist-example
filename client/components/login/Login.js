@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
 import {FormattedMessage} from 'react-intl'
-import { gql, graphql, compose } from 'react-apollo'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { login } from '../../store'
 
 const Login = styled.div`
     margin-top: 50px;
@@ -17,6 +19,7 @@ export class LoginComponent extends React.PureComponent {
         };
         this.changeLogin = this.changeLogin.bind(this);
         this.changePassword = this.changePassword.bind(this);
+        this.loginClick = this.loginClick.bind(this);
     }
 
     changeLogin(e) {
@@ -25,6 +28,10 @@ export class LoginComponent extends React.PureComponent {
 
     changePassword(e) {
         this.setState({password: e.target.value});
+    }
+
+    loginClick() {
+        this.props.login(this.state.login, this.state.password);
     }
 
     render() {
@@ -42,7 +49,7 @@ export class LoginComponent extends React.PureComponent {
                 <input type="password" value={this.state.password} onChange={this.changePassword} />
             </div>
             <div>
-                <button>
+                <button onClick={this.loginClick}>
                     <FormattedMessage id='login.button' defaultMessage='Login' />
                 </button>
             </div>
@@ -51,4 +58,12 @@ export class LoginComponent extends React.PureComponent {
     }
 }
 
-export default LoginComponent;
+const mapStateToProps = ({ auth: {isAuthorized} }) => ({ isAuthorized });
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: bindActionCreators(login, dispatch)
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);

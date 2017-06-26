@@ -3,5 +3,4 @@ export const Viewer = `
         firstName: String
         lastName: String
         login: String
-        token: String
 }`;

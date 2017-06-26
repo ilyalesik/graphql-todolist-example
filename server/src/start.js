@@ -34,6 +34,14 @@ export const start = async () => {
                 todoitems: async () => {
                     return (await TodoItems.find({ deleted: null }).toArray()).map(prepare)
                 },
+                viewer: async (root, {token}) => {
+                    try {
+                        const {userId, timestamp} = jwt.verify(token, 'shhhhh');
+                        return prepare(await Viewers.findOne({_id: ObjectId(userId)}));
+                    } catch(err) {
+                        return null;
+                    }
+                }
             },
             TodoItem: {},
             Mutation: {
@@ -53,6 +61,7 @@ export const start = async () => {
                     }
                     password = md5(password);
                     //todo check already registed
+                    //todo private key
                     const res = await Viewers.insert({firstName, lastName, login, password});
                     const token = jwt.sign({ userId: res.insertedIds[0], timestamp: Date.now() }, 'shhhhh');
                     return {token};

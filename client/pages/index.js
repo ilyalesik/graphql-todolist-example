@@ -11,7 +11,7 @@ import ChangeLanguage from '../components/language-changer/LaungageChanger'
 import withData from '../withData'
 import { connect } from 'react-redux'
 
-import './index.css'
+import ss from './index.css'
 
 const Header = styled.h1`
     font-weight: bold;
@@ -26,12 +26,16 @@ export class MainPage extends React.PureComponent {
     }
 
     render() {
+        console.log(ss);
         return <div>
-            <div className="nav">
-                <Header>
-                    <FormattedMessage id='index.todo' defaultMessage='ToDo!' />
-                </Header>
-                <ChangeLanguage />
+            <div className={ss.nav}>
+                <div className={ss.nav_text__color}>
+                    <Header>
+                        <FormattedMessage id='index.todo' defaultMessage='ToDo!' />
+                    </Header>
+                    <ChangeLanguage />
+                </div>
+
             </div>
 
             <ToDoList />

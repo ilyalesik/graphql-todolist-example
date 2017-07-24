@@ -23,6 +23,7 @@ export default class MyDocument extends Document {
             <html>
             <Head>
                 <title>My page</title>
+                <link rel='stylesheet' href='/static/css/bundle.css' />
                 {styleTags}
             </Head>
             <body>

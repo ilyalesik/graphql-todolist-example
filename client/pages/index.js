@@ -11,14 +11,11 @@ import ChangeLanguage from '../components/language-changer/LaungageChanger'
 import withData from '../withData'
 import { connect } from 'react-redux'
 
+import './index.css'
+
 const Header = styled.h1`
     font-weight: bold;
     flex: 1;
-`;
-
-const Nav = styled.div`
-    display: flex;
-    width: 500px;
 `;
 
 export class MainPage extends React.PureComponent {
@@ -30,12 +27,12 @@ export class MainPage extends React.PureComponent {
 
     render() {
         return <div>
-            <Nav>
+            <div className="nav">
                 <Header>
                     <FormattedMessage id='index.todo' defaultMessage='ToDo!' />
                 </Header>
                 <ChangeLanguage />
-            </Nav>
+            </div>
 
             <ToDoList />
         </div>

@@ -83,8 +83,19 @@ export const start = async () => {
 
         app.use('/', graphfrontRouter({ path: 'dashboard' }));
 
+        app.use('/assets', express.static('../dist'));
+
         app.get('/dashboard', function(req, res) {
-            res.send( `dashboard`);
+            res.send( `<html>
+                <head>
+                    <meta charSet="utf-8" />
+                    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
+                </head>
+                <body>
+                    <div id="app"></div>
+                    <script type="application/javascript" src="/assets/bundle.js"></script>
+                </body>
+            </html>`);
         });
 
         app.listen(PORT, () => {

@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 import {graphqlExpress, graphiqlExpress} from 'graphql-server-express'
 import {makeExecutableSchema} from 'graphql-tools'
 import cors from 'cors'
+import graphfrontRouter from 'graphfront-ui/server';
 
 const URL = 'http://localhost';
 const PORT = 3001;
@@ -78,7 +79,13 @@ export const start = async () => {
 
         app.use('/graphiql', graphiqlExpress({
             endpointURL: '/graphql'
-        }))
+        }));
+
+        app.use('/', graphfrontRouter({ path: 'dashboard' }));
+
+        app.get('/dashboard', function(req, res) {
+            res.send( `dashboard`);
+        });
 
         app.listen(PORT, () => {
             console.log(`Visit ${URL}:${PORT}`)

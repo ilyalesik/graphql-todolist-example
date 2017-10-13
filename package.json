@@ -12,5 +12,9 @@
     "react"
   ],
   "author": "Ilia Lesik",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "graphfront": "^0.2.2",
+    "graphfront-ui": "^0.1.6"
+  }
 }
